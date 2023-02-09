@@ -1,0 +1,1 @@
+- [interfaces.go](../snippets/interfaces/interfaces.go)

@@ -1,0 +1,8 @@
+- Theory
+	- [[About using ok]]
+- Snippets
+	- [[Fibonnaci with closures, channels and defer]]
+	- [[Scrapper with channels and goroutines]]
+	- [[Wordcount]]
+	- [[Type switches]]
+	- [[Generic Types]]

@@ -1,5 +1,7 @@
 - Theory
 	- [[About using ok]]
+	- [[Reference types]]
+	- [[Pointer shortcut]]
 - Snippets
 	- [[Fibonnaci with closures, channels and defer]]
 	- [[Scrapper with channels and goroutines]]

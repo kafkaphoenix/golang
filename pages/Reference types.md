@@ -1,0 +1,3 @@
+- Reference types are pointers so you can modify them in functions when we send them as values
+- Slices, Maps, pointers, channels and functions are reference types
+- Int, float, string, bool and structs are value types so you need to send them as pointers to change the values

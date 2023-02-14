@@ -11,22 +11,33 @@ import (
 
 const HAND_SIZE = 7
 const DECK_SIZE = 52
+const PLAYERS_NUMBER = 4
 
 type Game struct {
 	Session_id string
 	*Deck
-	*Player
+	Players [PLAYERS_NUMBER]*Player
 }
 
 func (g *Game) start() {
 	g.Session_id = "Session 1"
 	g.Deck = &Deck{}
-	g.Player = &Player{}
+	i := 0
+	for i < PLAYERS_NUMBER {
+		g.Players[i] = &Player{}
+		i += 1
+	}
 
 	fmt.Println("Creating deck")
 	g.Deck.newDeck()
-	fmt.Println("Dealing initial hand")
-	g.Deck.deal(HAND_SIZE, g.Player)
+	fmt.Printf("\nDealing initial hand to %v players", PLAYERS_NUMBER)
+	g.deal()
+}
+
+func (g *Game) deal() {
+	for _, player := range g.Players {
+		go g.Deck.deal(HAND_SIZE, player)
+	}
 }
 
 // go binary encoder

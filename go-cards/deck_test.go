@@ -12,9 +12,9 @@ func TestNewDeck(t *testing.T) {
 
 func TestDeal(t *testing.T) {
 	deck := Deck{}
-	player := Player{}
+	player := &Player{}
 	deck.newDeck()
-	deck.deal(7, &player)
+	deck.deal(7, player)
 
 	if len(deck) != 45 {
 		t.Errorf("Expected deck length of 45, but got %v", len(deck))

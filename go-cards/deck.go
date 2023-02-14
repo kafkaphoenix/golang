@@ -34,7 +34,7 @@ func (d *Deck) newDeck() {
 func (d *Deck) deal(amount int, p *Player) {
 	cards := (*d)[:amount]
 	*d = (*d)[amount:]
-	p.Hand = append(p.Hand, cards...)
+	(*p).Hand = append(p.Hand, cards...)
 }
 
 func (d *Deck) shuffle() {

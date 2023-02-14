@@ -5,5 +5,7 @@ func main() {
 	game.start()
 
 	game.Deck.ShowDeck()
-	game.Player.ShowHand()
+	for _, player := range game.Players {
+		player.ShowHand()
+	}
 }

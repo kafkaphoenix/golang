@@ -1,0 +1,1 @@
+- If you define the pointer receiver in the function and then call that function for a defined type (struct for example) go understand it and converts the value to pointer that's called pointer shortcut)

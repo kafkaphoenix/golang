@@ -8,3 +8,9 @@
 	- [[Wordcount]]
 	- [[Type switches]]
 	- [[Generic Types]]
+- Links
+	- https://golangprojectstructure.com/creating-cool-games-with-ebiten-in-go/
+	- https://medium.com/sellerapp/golang-project-structuring-ben-johnson-way-2a11035f94bc
+	- https://github.com/golang-standards/project-layout
+	- https://stackoverflow.com/questions/36417199/how-to-broadcast-message-using-channel
+	-

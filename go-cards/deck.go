@@ -31,11 +31,10 @@ func (d *Deck) newDeck() {
 	d.shuffle()
 }
 
-func (d *Deck) deal(amount int, p *Player, c chan string) {
+func (d *Deck) deal(amount int, p *Player) {
 	cards := (*d)[:amount]
 	*d = (*d)[amount:]
 	p.Hand = append(p.Hand, cards...)
-	c <- "Player " + p.Name + " dealt"
 }
 
 func (d *Deck) shuffle() {

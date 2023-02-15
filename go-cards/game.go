@@ -37,21 +37,17 @@ func (g *Game) start() {
 
 func (g *Game) deal() {
 	for _, player := range g.Players {
-		go g.Deck.deal(HAND_SIZE, player, g.c)
-	}
-
-	for i := 0; i < PLAYERS_NUMBER; i++ {
-		fmt.Println(<-g.c)
+		g.Deck.deal(HAND_SIZE, player)
 	}
 }
 
-func (g Game) showHands() {
+func (g *Game) showHands() {
 	for _, player := range g.Players {
 		player.showHand()
 	}
 }
 
-func (g Game) showDeck() {
+func (g *Game) showDeck() {
 	g.Deck.showDeck()
 }
 
@@ -62,11 +58,7 @@ func (g *Game) giveCardNextPlayer() {
 		if next_player == PLAYERS_NUMBER {
 			next_player = 0
 		}
-		go player.giveCard(g.Players[next_player], g.c)
-	}
-
-	for i := 0; i < PLAYERS_NUMBER; i++ {
-		fmt.Println(<-g.c)
+		player.giveCard(g.Players[next_player])
 	}
 }
 
@@ -83,7 +75,7 @@ func (g *Game) print_message() {
 }
 
 // go binary encoder
-func (g Game) encode() []byte {
+func (g *Game) encode() []byte {
 	b := &bytes.Buffer{}
 	e := gob.NewEncoder(b)
 	err := e.Encode(g)
@@ -108,7 +100,7 @@ func (g *Game) decode(str string) {
 	}
 }
 
-func (g Game) saveToFile(filename string, filepath string) string {
+func (g *Game) saveToFile(filename string, filepath string) string {
 	saved_state := g.encode()
 	var anyone_can_read_write fs.FileMode = 0666
 	os.WriteFile(filepath+filename, saved_state, anyone_can_read_write)

@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestNewDeck(t *testing.T) {
 	deck := Deck{}
@@ -13,8 +16,10 @@ func TestNewDeck(t *testing.T) {
 func TestDeal(t *testing.T) {
 	deck := Deck{}
 	player := &Player{}
+	c := make(chan string)
 	deck.newDeck()
-	deck.deal(7, player)
+	go deck.deal(7, player, c)
+	fmt.Println(<-c)
 
 	if len(deck) != 45 {
 		t.Errorf("Expected deck length of 45, but got %v", len(deck))

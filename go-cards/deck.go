@@ -13,7 +13,7 @@ type Card struct {
 
 type Deck []Card
 
-func (d Deck) ShowDeck() {
+func (d Deck) showDeck() {
 	fmt.Println()
 	for i, card := range d {
 		fmt.Printf("%v %v of %v\n", i+1, card.Value, card.Suit)
@@ -28,13 +28,14 @@ func (d *Deck) newDeck() {
 			*d = append(*d, Card{Suit: suit, Value: value})
 		}
 	}
-	(*d).shuffle()
+	d.shuffle()
 }
 
-func (d *Deck) deal(amount int, p *Player) {
+func (d *Deck) deal(amount int, p *Player, c chan string) {
 	cards := (*d)[:amount]
 	*d = (*d)[amount:]
-	(*p).Hand = append(p.Hand, cards...)
+	p.Hand = append(p.Hand, cards...)
+	c <- "Player " + p.Name + " dealt"
 }
 
 func (d *Deck) shuffle() {

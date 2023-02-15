@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"strconv"
 )
 
 const HAND_SIZE = 7
@@ -17,27 +18,68 @@ type Game struct {
 	Session_id string
 	*Deck
 	Players [PLAYERS_NUMBER]*Player
+	c       chan string
 }
 
 func (g *Game) start() {
 	g.Session_id = "Session 1"
+	g.init_chat()
 	g.Deck = &Deck{}
-	i := 0
-	for i < PLAYERS_NUMBER {
-		g.Players[i] = &Player{}
-		i += 1
+	for i := 0; i < PLAYERS_NUMBER; i++ {
+		g.Players[i] = &Player{Name: "Player" + strconv.Itoa(i+1)}
 	}
 
 	fmt.Println("Creating deck")
 	g.Deck.newDeck()
-	fmt.Printf("\nDealing initial hand to %v players", PLAYERS_NUMBER)
+	fmt.Printf("\nDealing initial hand to %v players\n", PLAYERS_NUMBER)
 	g.deal()
 }
 
 func (g *Game) deal() {
 	for _, player := range g.Players {
-		go g.Deck.deal(HAND_SIZE, player)
+		go g.Deck.deal(HAND_SIZE, player, g.c)
 	}
+
+	for i := 0; i < PLAYERS_NUMBER; i++ {
+		fmt.Println(<-g.c)
+	}
+}
+
+func (g Game) showHands() {
+	for _, player := range g.Players {
+		player.showHand()
+	}
+}
+
+func (g Game) showDeck() {
+	g.Deck.showDeck()
+}
+
+func (g *Game) giveCardNextPlayer() {
+	next_player := 0
+	for _, player := range g.Players {
+		next_player += 1
+		if next_player == PLAYERS_NUMBER {
+			next_player = 0
+		}
+		go player.giveCard(g.Players[next_player], g.c)
+	}
+
+	for i := 0; i < PLAYERS_NUMBER; i++ {
+		fmt.Println(<-g.c)
+	}
+}
+
+func (g *Game) init_chat() {
+	g.c = make(chan string)
+}
+
+func (g *Game) send_message(m string) {
+	g.c <- m
+}
+
+func (g *Game) print_message() {
+	fmt.Println(<-g.c)
 }
 
 // go binary encoder
@@ -80,9 +122,9 @@ func (g *Game) loadFromFile(filepath string) {
 		fmt.Println(`failed load from file`, err)
 	}
 
-	(*g).loadFromToken(base64.StdEncoding.EncodeToString(saved_state))
+	g.loadFromToken(base64.StdEncoding.EncodeToString(saved_state))
 }
 
 func (g *Game) loadFromToken(token string) {
-	(*g).decode(token)
+	g.decode(token)
 }
